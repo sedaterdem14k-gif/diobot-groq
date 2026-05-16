@@ -677,9 +677,9 @@ function renderSkinOpts(l) {
   const o2 = document.getElementById('sfOpts2');
   const o3 = document.getElementById('sfOpts3');
   if (!o1) return;
-  o1.innerHTML = t.types.map(([em,lb]) => `<button class="sf-opt" onclick="pickType(${JSON.stringify(lb)},this)">${em} ${lb}</button>`).join('');
-  o2.innerHTML = t.probs.map(([em,lb]) => `<button class="sf-opt" onclick="toggleProb(${JSON.stringify(lb)},this)">${em} ${lb}</button>`).join('');
-  o3.innerHTML = t.budgets.map(([em,lb]) => `<button class="sf-opt" onclick="pickBudget(${JSON.stringify(lb)},this)">${em} ${lb}</button>`).join('');
+  o1.innerHTML = t.types.map(([em,lb]) => `<button class="sf-opt" onclick='pickType(${JSON.stringify(lb)},this)'>${em} ${lb}</button>`).join('');
+  o2.innerHTML = t.probs.map(([em,lb]) => `<button class="sf-opt" onclick='toggleProb(${JSON.stringify(lb)},this)'>${em} ${lb}</button>`).join('');
+  o3.innerHTML = t.budgets.map(([em,lb]) => `<button class="sf-opt" onclick='pickBudget(${JSON.stringify(lb)},this)'>${em} ${lb}</button>`).join('');
 }
 
 function toggleSkin() {

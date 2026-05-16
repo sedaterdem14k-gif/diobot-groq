@@ -605,6 +605,7 @@ const skinData = {type:'', probs:[], budget:''};
 if (apiKey) document.getElementById('apiBanner').style.display = 'none';
 applyAll(curLang);
 fetchRates().then(updateCurBadge);
+setInterval(() => { ratesFetched = 0; fetchRates().then(updateCurBadge); }, 3600000);
 
 // ════════════════════════════════════════
 // DİL

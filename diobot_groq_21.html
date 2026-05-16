@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dio BOT — Dionesse</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --c:#f5f0e8;--c2:#ede7d9;--c3:#e4dccb;
+  --g:#3d5a3e;--g2:#4e7250;--g3:#2d4230;
+  --gl:#c8d9c9;--gp:#e8f0e8;
+  --td:#2a3528;--tm:#5a6e58;--tl:#8a9e88;
+  --b:#c8d4c0;--bs:#dde8d8;
+  --sh:0 4px 24px rgba(45,66,48,.10);
+  --sh2:0 8px 40px rgba(45,66,48,.16);
+}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--c2);color:var(--td);}
+.page{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.app{display:flex;flex-direction:column;width:100%;max-width:780px;height:92vh;max-height:860px;background:var(--c);border:1px solid var(--b);border-radius:20px;overflow:hidden;box-shadow:var(--sh2);}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:var(--g3);flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:11px;}
+.logo-mark{width:38px;height:38px;background:var(--c);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--g3);}
+.logo-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c);}
+.logo-sub{font-size:9px;color:var(--gl);letter-spacing:2px;text-transform:uppercase;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.cur-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 11px;font-size:11px;color:var(--gl);display:none;align-items:center;gap:5px;}
+.cur-badge i{font-size:12px;}
+
+/* LANG DROPDOWN */
+.lang-wrap{position:relative;}
+.lang-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:var(--c);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.lang-drop{position:absolute;top:calc(100%+6px);right:0;background:var(--c);border:1px solid var(--b);border-radius:12px;box-shadow:var(--sh2);min-width:155px;z-index:999;display:none;overflow:hidden;}
+.lang-drop.open{display:block;}
+.lang-opt{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:13px;color:var(--td);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif;}
+.lang-opt:hover{background:var(--gp);}
+.lang-opt.active{background:var(--gp);color:var(--g);font-weight:500;}
+
+/* MESSAGES */
+.messages{flex:1;padding:24px 28px;overflow-y:auto;display:flex;flex-direction:column;gap:18px;scroll-behavior:smooth;}
+.messages::-webkit-scrollbar{width:4px;}
+.messages::-webkit-scrollbar-thumb{background:var(--b);border-radius:3px;}
+
+/* WELCOME */
+.welcome{text-align:center;padding:24px 16px 16px;}
+.w-badge{display:inline-block;background:var(--gp);color:var(--g);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 16px;border-radius:20px;margin-bottom:12px;border:1px solid var(--b);}
+.welcome h2{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--td);margin-bottom:7px;}
+.welcome p{font-size:13px;color:var(--tm);line-height:1.7;margin-bottom:20px;}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:480px;margin:0 auto 14px;}
+.qcard{background:var(--c2);border:1px solid var(--b);border-radius:11px;padding:13px 14px;text-align:left;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;}
+.qcard:hover{border-color:var(--g);background:var(--c3);transform:translateY(-1px);}
+.qcard i{font-size:17px;color:var(--g);margin-bottom:7px;display:block;}
+.qcard .qt{font-size:12.5px;font-weight:500;color:var(--td);margin-bottom:2px;}
+.qcard .qd{font-size:11px;color:var(--tm);}
+.skin-cta{background:linear-gradient(135deg,var(--g3),var(--g));border-radius:13px;padding:16px 18px;max-width:480px;width:100%;display:flex;align-items:center;gap:14px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;text-align:left;transition:opacity .15s;margin:0 auto;}
+.skin-cta:hover{opacity:.9;}
+.skin-cta-icon{width:42px;height:42px;background:rgba(255,255,255,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.skin-cta .stitle{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--c);font-weight:500;margin-bottom:2px;}
+.skin-cta .ssub{font-size:11.5px;color:var(--gl);}
+.skin-cta i.arrow{margin-left:auto;color:var(--gl);font-size:18px;}
+
+/* MSG BUBBLES */
+.msg{display:flex;gap:11px;animation:fadeUp .2s ease both;}
+.msg.user{flex-direction:row-reverse;}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.av.bot{background:var(--g);color:var(--c);font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;}
+.av.user{background:var(--gp);color:var(--g);border:1px solid var(--b);font-size:14px;}
+.bubble{padding:12px 16px;border-radius:14px;font-size:14px;line-height:1.7;color:var(--td);background:var(--c2);border:1px solid var(--bs);max-width:540px;word-break:break-word;}
+.msg.user .bubble{background:var(--g);color:var(--c);border-color:var(--g3);}
+.typing-dots{display:flex;gap:4px;align-items:center;padding:2px 0;}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--g);opacity:.35;animation:blink 1.2s infinite;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.35}40%{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* SKIN FORM */
+.skin-form{background:var(--c);border-top:1px solid var(--b);flex-shrink:0;max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.skin-form.open{max-height:300px;}
+.sf-head{display:flex;align-items:center;gap:8px;padding:13px 18px 9px;border-bottom:1px solid var(--bs);}
+.sf-head i{font-size:16px;color:var(--g);}
+.sf-head span{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;color:var(--td);}
+.sf-close{margin-left:auto;background:transparent;border:none;color:var(--tl);cursor:pointer;font-size:16px;display:flex;align-items:center;}
+.sf-body{padding:13px 18px 15px;overflow-y:auto;max-height:230px;}
+.sf-prog{display:flex;gap:4px;margin-bottom:12px;}
+.sf-dot{height:3px;border-radius:2px;flex:1;background:var(--bs);transition:background .2s;}
+.sf-dot.done{background:var(--g);}
+.sf-step{display:none;}
+.sf-step.active{display:block;}
+.sf-lbl{font-size:11px;color:var(--tl);letter-spacing:.5px;text-transform:uppercase;margin-bottom:9px;font-weight:500;}
+.sf-opts{display:flex;gap:7px;flex-wrap:wrap;}
+.sf-opt{padding:6px 13px;border-radius:18px;font-size:12.5px;color:var(--tm);border:1px solid var(--b);background:var(--c2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.sf-opt:hover{border-color:var(--g);color:var(--g);}
+.sf-opt.sel{background:var(--g);color:var(--c);border-color:var(--g);}
+.sf-next{margin-top:12px;display:inline-flex;align-items:center;gap:5px;padding:7px 18px;border-radius:18px;background:var(--g);color:var(--c);border:none;font-size:12.5px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;}
+.sf-next:hover{background:var(--g2);}
+
+/* INPUT AREA */
+.input-area{padding:11px 18px 15px;border-top:1px solid var(--b);background:var(--c2);flex-shrink:0;}
+.toolbar{display:flex;gap:7px;margin-bottom:8px;}
+.tool-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:18px;font-size:12px;color:var(--g);border:1px solid var(--b);background:var(--gp);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s;}
+.tool-btn:hover,.tool-btn.on{background:var(--g);color:var(--c);border-color:var(--g);}
+.tool-btn i{font-size:13px;}
+.input-row{display:flex;gap:10px;align-items:flex-end;background:var(--c);border:1px solid var(--b);border-radius:13px;padding:10px 14px;transition:border-color .2s;}
+.input-row:focus-within{border-color:var(--g);}
+.input-row textarea{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--td);resize:none;height:24px;max-height:110px;line-height:1.5;}
+.input-row textarea::placeholder{color:var(--tl);}
+.send-btn{width:36px;height:36px;border-radius:9px;background:var(--g);border:none;color:var(--c);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;transition:background .15s,transform .1s;}
+.send-btn:hover{background:var(--g2);}
+.send-btn:active{transform:scale(.94);}
+.bottom-bar{display:flex;align-items:center;justify-content:space-between;margin-top:6px;}
+.hint{font-size:11px;color:var(--tl);}
+.clear-btn{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--tl);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;padding:3px 8px;border-radius:6px;transition:all .15s;}
+.clear-btn:hover{background:#fff0f0;color:#c0392b;}
+.disclaimer{display:flex;align-items:center;gap:6px;margin-top:7px;padding:6px 12px;background:var(--gp);border:1px solid var(--bs);border-radius:8px;font-size:11px;color:var(--tm);}
+.disclaimer i{font-size:13px;color:var(--g);flex-shrink:0;}
+
+/* API BANNER */
+.api-banner{background:var(--gp);border-bottom:1px solid var(--b);padding:16px 22px;flex-shrink:0;}
+.api-banner .abt{display:flex;align-items:center;gap:7px;font-weight:500;font-size:13.5px;color:var(--g3);margin-bottom:6px;}
+.api-banner p{font-size:12.5px;color:var(--tm);line-height:1.6;margin-bottom:10px;}
+.api-banner a{color:var(--g);font-weight:500;}
+.api-steps{font-size:12px;color:var(--tm);margin-bottom:10px;line-height:1.8;background:var(--c);border-radius:7px;padding:9px 13px;border:1px solid var(--bs);}
+.api-row{display:flex;gap:8px;}
+.api-inp{flex:1;padding:8px 12px;border-radius:8px;border:1px solid var(--b);font-size:12.5px;font-family:'DM Sans',sans-serif;outline:none;background:var(--c);color:var(--td);}
+.api-inp:focus{border-color:var(--g);}
+.api-save{padding:8px 16px;border-radius:8px;background:var(--g);color:var(--c);border:none;font-size:12.5px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;}
+.api-save:hover{background:var(--g2);}
+
+/* KARŞILAŞTIRMA */
+.comp-form{background:var(--c);border-top:1px solid var(--b);flex-shrink:0;max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.comp-form.open{max-height:160px;}
+.comp-body{padding:12px 18px 15px;}
+.comp-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.comp-col{flex:1;}
+.comp-label{font-size:10px;color:var(--tl);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;font-weight:500;}
+.comp-inp{width:100%;padding:8px 12px;border-radius:9px;border:1px solid var(--b);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:var(--c2);color:var(--td);transition:border-color .15s;}
+.comp-inp:focus{border-color:var(--g);background:var(--c);}
+.comp-vs{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--tl);flex-shrink:0;}
+.comp-btn{display:flex;align-items:center;gap:6px;padding:8px 20px;border-radius:20px;background:var(--g);color:var(--c);border:none;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:opacity .15s;}
+.comp-btn:hover{opacity:.85;}
+
+/* KARŞİLAŞTIRMA SONUÇ KARTI */
+.comp-card{background:var(--c);border:1px solid var(--b);border-radius:14px;overflow:hidden;margin-top:4px;}
+.comp-card-header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--g3);color:var(--c);}
+.comp-card-header i{font-size:16px;color:var(--gl);}
+.comp-card-header span{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;}
+.comp-table{width:100%;border-collapse:collapse;}
+.comp-table th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--tl);padding:9px 14px;text-align:left;border-bottom:1px solid var(--bs);background:var(--c2);}
+.comp-table th:not(:first-child){text-align:center;color:var(--g);font-size:11px;}
+.comp-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--bs);color:var(--td);vertical-align:top;}
+.comp-table td:not(:first-child){text-align:center;}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-table tr:hover td{background:var(--gp);}
+.comp-winner{display:inline-block;background:var(--g);color:var(--c);font-size:10px;padding:2px 8px;border-radius:10px;margin-top:4px;}
+
+/* ÜRÜN LİNK BUTONLARI */
+.prod-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bs);}
+.prod-link-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:500;color:var(--g);background:var(--gp);border:1px solid var(--b);text-decoration:none;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.prod-link-btn:hover{background:var(--g);color:var(--c);border-color:var(--g);}
+.prod-link-btn i{font-size:12px;}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-mark">D</div>
+      <div>
+        <div class="logo-name">Dio BOT</div>
+        <div class="logo-sub">by Dionesse</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="cur-badge" id="curBadge"><i class="ti ti-currency-exchange"></i><span id="curBadgeText"></span></div>
+      <div class="lang-wrap">
+        <button class="lang-btn" onclick="toggleDrop()">
+          <span id="curFlag">🇹🇷</span>
+          <span id="curLangName">Türkçe</span>
+          <i class="ti ti-chevron-down" style="font-size:11px;opacity:.7;"></i>
+        </button>
+        <div class="lang-drop" id="langDrop">
+          <button class="lang-opt active" onclick="setLang('tr',this)">🇹🇷 Türkçe</button>
+          <button class="lang-opt" onclick="setLang('en',this)">🇬🇧 English</button>
+          <button class="lang-opt" onclick="setLang('ar',this)">🇸🇦 العربية</button>
+          <button class="lang-opt" onclick="setLang('de',this)">🇩🇪 Deutsch</button>
+          <button class="lang-opt" onclick="setLang('fr',this)">🇫🇷 Français</button>
+          <button class="lang-opt" onclick="setLang('ru',this)">🇷🇺 Русский</button>
+          <button class="lang-opt" onclick="setLang('es',this)">🇪🇸 Español</button>
+          <button class="lang-opt" onclick="setLang('zh',this)">🇨🇳 中文</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API BANNER -->
+  <div class="api-banner" id="apiBanner">
+    <div class="abt"><i class="ti ti-key" style="font-size:17px;color:var(--g);"></i><span id="apiTitle">Groq API Anahtarı Gerekli (Ücretsiz)</span></div>
+    <p id="apiDesc">Dio BOT'u aktif etmek için ücretsiz Groq API anahtarı gereklidir.</p>
+    <div class="api-steps" id="apiSteps">1. <a href="https://console.groq.com" target="_blank">console.groq.com</a> → Google ile kayıt olun<br>2. "API Keys" → "Create API Key"<br>3. Kopyalayıp aşağıya yapıştırın</div>
+    <div class="api-row">
+      <input class="api-inp" type="password" id="apiInp" placeholder="gsk_...">
+      <button class="api-save" id="apiSaveBtn" onclick="saveKey()">Aktif Et</button>
+    </div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="messages" id="msgs">
+    <!-- WELCOME -->
+    <div class="welcome" id="welcome">
+      <div class="w-badge" id="wBadge">Dionesse Marka Asistanı</div>
+      <h2 id="wTitle">Merhaba, ben <em>Dio BOT</em></h2>
+      <p id="wDesc">Dionesse'in tüm ürünleri, fiyatları ve marka hakkında<br>her sorunuzu istediğiniz dilde yanıtlıyorum.</p>
+      <div class="qgrid" id="qgrid"></div>
+      <button class="skin-cta" onclick="toggleSkin()">
+        <div class="skin-cta-icon">✨</div>
+        <div>
+          <div class="stitle" id="skinCtaTitle">Kişisel Cilt Analizi</div>
+          <div class="ssub" id="skinCtaSub">Cilt tipinize göre ürün rutini oluşturalım</div>
+        </div>
+        <i class="ti ti-arrow-right arrow"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- SKIN FORM -->
+  <div class="skin-form" id="skinForm">
+    <div class="sf-head">
+      <i class="ti ti-sparkles"></i>
+      <span id="sfTitle">Kişisel Cilt Analizi</span>
+      <button class="sf-close" onclick="closeSkin()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="sf-body">
+      <div class="sf-prog">
+        <div class="sf-dot done" id="d1"></div>
+        <div class="sf-dot" id="d2"></div>
+        <div class="sf-dot" id="d3"></div>
+      </div>
+      <div class="sf-step active" id="s1">
+        <div class="sf-lbl" id="sfL1">Cilt tipiniz nedir?</div>
+        <div class="sf-opts" id="sfOpts1"></div>
+      </div>
+      <div class="sf-step" id="s2">
+        <div class="sf-lbl" id="sfL2">Cilt sorununuz? (birden fazla seçilebilir)</div>
+        <div class="sf-opts" id="sfOpts2"></div>
+        <button class="sf-next" onclick="goStep(3)"><span id="sfNextLbl">Devam</span> <i class="ti ti-arrow-right"></i></button>
+      </div>
+      <div class="sf-step" id="s3">
+        <div class="sf-lbl" id="sfL3">Bütçeniz nedir?</div>
+        <div class="sf-opts" id="sfOpts3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KARŞILAŞTIRMA PANELİ -->
+  <div class="comp-form" id="compForm">
+    <div class="sf-head">
+      <i class="ti ti-layout-columns"></i>
+      <span id="compTitle">Ürün Karşılaştır</span>
+      <button class="sf-close" onclick="closeComp()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="comp-body">
+      <div class="comp-row">
+        <div class="comp-col">
+          <div class="comp-label" id="compL1">1. Ürün</div>
+          <input class="comp-inp" id="compInp1" placeholder="örn: Keçi Sütü Sabunu" list="prodList1">
+          <datalist id="prodList1"></datalist>
+        </div>
+        <div class="comp-vs">VS</div>
+        <div class="comp-col">
+          <div class="comp-label" id="compL2">2. Ürün</div>
+          <input class="comp-inp" id="compInp2" placeholder="örn: Eşek Sütü Sabunu" list="prodList2">
+          <datalist id="prodList2"></datalist>
+        </div>
+      </div>
+      <button class="comp-btn" id="compBtn" onclick="runComp()">
+        <i class="ti ti-analyze"></i> <span id="compBtnText">Karşılaştır</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-area">
+    <div class="toolbar">
+      <button class="tool-btn" id="skinToolBtn" onclick="toggleSkin()">
+        <i class="ti ti-sparkles"></i><span id="skinBtnLbl">Cilt Analizi</span>
+      </button>
+      <button class="tool-btn" id="compToolBtn" onclick="toggleComp()">
+        <i class="ti ti-layout-columns"></i><span id="compBtnLbl">Karşılaştır</span>
+      </button>
+      <button class="tool-btn" onclick="newChat()">
+        <i class="ti ti-plus"></i><span id="newChatLbl">Yeni Sohbet</span>
+      </button>
+    </div>
+    <div class="input-row">
+      <textarea id="inp" placeholder="Soru sorun, öneri isteyin..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"
+        oninput="this.style.height='24px';this.style.height=Math.min(this.scrollHeight,110)+'px'"></textarea>
+      <button class="send-btn" onclick="send()"><i class="ti ti-send"></i></button>
+    </div>
+    <div class="bottom-bar">
+      <span class="hint" id="hintLbl">Enter gönder · Shift+Enter yeni satır</span>
+      <button class="clear-btn" onclick="clearChat()"><i class="ti ti-trash"></i><span id="clearLbl">Sohbeti Sil</span></button>
+    </div>
+    <div class="disclaimer"><i class="ti ti-info-circle"></i><span id="discLbl">Dio BOT hata yapabilir. Önemli bilgileri lütfen doğrulayın.</span></div>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// DİL VERİSİ
+// ════════════════════════════════════════
+const L = {
+  tr:{
+    flag:'🇹🇷', name:'Türkçe',
+    sys:'Her zaman Türkçe yanıt ver.',
+    ph:'Soru sorun, öneri isteyin...',
+    hint:'Enter gönder · Shift+Enter yeni satır',
+    clear:'Sohbeti Sil', newChat:'Yeni Sohbet', skinBtn:'Cilt Analizi',
+    disc:'Dio BOT hata yapabilir. Önemli bilgileri lütfen doğrulayın.',
+    badge:'Dionesse Marka Asistanı',
+    h2:'Merhaba, ben <em>Dio BOT</em>',
+    desc:"Dionesse'in tüm ürünleri, fiyatları ve marka hakkında<br>her sorunuzu istediğiniz dilde yanıtlıyorum.",
+    ctaTitle:'Kişisel Cilt Analizi', ctaSub:'Cilt tipinize göre ürün rutini oluşturalım',
+    sfTitle:'Kişisel Cilt Analizi',
+    l1:'Cilt tipiniz nedir?', l2:'Cilt sorununuz? (birden fazla seçilebilir)', l3:'Bütçeniz nedir?',
+    next:'Devam',
+    apiTitle:'Groq API Anahtarı Gerekli (Ücretsiz)',
+    apiDesc:'Dio BOT\'u aktif etmek için ücretsiz Groq API anahtarı gereklidir.',
+    apiSteps:'1. <a href="https://console.groq.com" target="_blank">console.groq.com</a> → Google ile kayıt olun<br>2. "API Keys" → "Create API Key"<br>3. Kopyalayıp aşağıya yapıştırın',
+    apiBtn:'Aktif Et',
+    types:[['🫧','Yağlı'],['🌵','Kuru'],['⚖️','Karma'],['🌸','Hassas'],['✨','Normal']],
+    probs:[['🔴','Sivilce/Akne'],['🟤','Leke'],['🕐','Kırışıklık'],['💧','Nemsizlik'],['🔬','Gözenek'],['⚫','Siyah nokta'],['🌹','Kızarıklık'],['😐','Donuk ten'],['⏳','Yaşlanma']],
+    budgets:[['💚','500 TL altı'],['💛','500–1000 TL'],['🧡','1000–2000 TL'],['💜','Bütçe önemli değil']],
+    qs:[
+      {i:'ti-droplet',t:'Ürün Sorgula',d:'Fiyat & içerik',m:'Keçi sütü sabunu hakkında bilgi ver'},
+      {i:'ti-crown',t:'Lüks Ürünler',d:'Premium koleksiyon',m:'Altın Sabun nedir, ne işe yarar?'},
+      {i:'ti-tag',t:'Fiyat Filtrele',d:'Bütçeye göre',m:'500 TL altında hangi ürünler var?'},
+      {i:'ti-pencil',t:'Metin Yaz',d:'Marka içeriği',m:'Dionesse için kısa tanıtım metni yaz'},
+    ]
+  },
+  en:{
+    flag:'🇬🇧', name:'English',
+    sys:'Always respond in English.',
+    ph:'Ask about products, prices...',
+    hint:'Enter to send · Shift+Enter new line',
+    clear:'Clear Chat', newChat:'New Chat', skinBtn:'Skin Analysis',
+    disc:'Dio BOT may make mistakes. Please verify important info.',
+    badge:'Dionesse Brand Assistant',
+    h2:'Hello, I am <em>Dio BOT</em>',
+    desc:'I know everything about Dionesse products,<br>prices and the brand.',
+    ctaTitle:'Personal Skin Analysis', ctaSub:'Get a product routine for your skin type',
+    sfTitle:'Skin Analysis',
+    l1:'What is your skin type?', l2:'Your skin concern? (multiple allowed)', l3:'Your budget?',
+    next:'Continue',
+    apiTitle:'Groq API Key Required (Free)',
+    apiDesc:'A free Groq API key is required to activate Dio BOT.',
+    apiSteps:'1. Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a><br>2. Sign up with Google<br>3. Create API Key → paste below',
+    apiBtn:'Activate',
+    types:[['🫧','Oily'],['🌵','Dry'],['⚖️','Combination'],['🌸','Sensitive'],['✨','Normal']],
+    probs:[['🔴','Acne'],['🟤','Dark spots'],['🕐','Wrinkles'],['💧','Dryness'],['🔬','Large pores'],['⚫','Blackheads'],['🌹','Redness'],['😐','Dull skin'],['⏳','Aging']],
+    budgets:[['💚','Under 500 TL'],['💛','500–1000 TL'],['🧡','1000–2000 TL'],['💜','No budget limit']],
+    qs:[
+      {i:'ti-droplet',t:'Query Product',d:'Price & ingredients',m:'Tell me about Goat Milk Soap'},
+      {i:'ti-crown',t:'Luxury Products',d:'Premium collection',m:'What is the Gold Soap?'},
+      {i:'ti-tag',t:'Filter by Price',d:'Budget-friendly',m:'Which products are under 500 TL?'},
+      {i:'ti-pencil',t:'Write Content',d:'Brand content',m:'Write a short intro for Dionesse'},
+    ]
+  },
+  ar:{
+    flag:'🇸🇦', name:'العربية',
+    sys:'أجب دائماً باللغة العربية.',
+    ph:'اسأل عن المنتجات والأسعار...',
+    hint:'Enter للإرسال',
+    clear:'مسح المحادثة', newChat:'محادثة جديدة', skinBtn:'تحليل البشرة',
+    disc:'قد يرتكب Dio BOT أخطاء. يرجى التحقق من المعلومات.',
+    badge:'مساعد Dionesse',
+    h2:'مرحباً، أنا <em>Dio BOT</em>',
+    desc:'أعرف كل شيء عن منتجات Dionesse والأسعار.',
+    ctaTitle:'تحليل البشرة الشخصي', ctaSub:'دعنا نصنع روتيناً يناسب بشرتك',
+    sfTitle:'تحليل البشرة',
+    l1:'ما نوع بشرتك؟', l2:'ما مشكلة بشرتك؟', l3:'ما ميزانيتك؟',
+    next:'متابعة',
+    apiTitle:'مطلوب مفتاح Groq API (مجاني)',
+    apiDesc:'يلزم مفتاح Groq API مجاني لتفعيل Dio BOT.',
+    apiSteps:'1. اذهب إلى <a href="https://console.groq.com" target="_blank">console.groq.com</a><br>2. سجل بحساب Google<br>3. أنشئ مفتاح API والصقه أدناه',
+    apiBtn:'تفعيل',
+    types:[['🫧','دهنية'],['🌵','جافة'],['⚖️','مختلطة'],['🌸','حساسة'],['✨','عادية']],
+    probs:[['🔴','حب الشباب'],['🟤','البقع'],['🕐','التجاعيد'],['💧','الجفاف'],['🔬','المسام'],['⚫','الرؤوس السوداء'],['🌹','الاحمرار'],['😐','البشرة الباهتة'],['⏳','الشيخوخة']],
+    budgets:[['💚','أقل من 500 ليرة'],['💛','500–1000 ليرة'],['🧡','1000–2000 ليرة'],['💜','الميزانية غير مهمة']],
+    qs:[
+      {i:'ti-droplet',t:'استعلام',d:'السعر والمكونات',m:'أخبرني عن صابون حليب الماعز'},
+      {i:'ti-crown',t:'منتجات فاخرة',d:'مجموعة بريميوم',m:'ما هو صابون الذهب؟'},
+      {i:'ti-tag',t:'فلتر السعر',d:'حسب الميزانية',m:'ما المنتجات أقل من 500 ليرة؟'},
+      {i:'ti-pencil',t:'كتابة محتوى',d:'محتوى العلامة',m:'اكتب مقدمة عن Dionesse'},
+    ]
+  },
+  de:{
+    flag:'🇩🇪', name:'Deutsch',
+    sys:'Antworte immer auf Deutsch.',
+    ph:'Fragen Sie nach Produkten...',
+    hint:'Enter senden · Shift+Enter neue Zeile',
+    clear:'Chat löschen', newChat:'Neuer Chat', skinBtn:'Hautanalyse',
+    disc:'Dio BOT kann Fehler machen. Bitte wichtige Infos prüfen.',
+    badge:'Dionesse Marken-Assistent',
+    h2:'Hallo, ich bin <em>Dio BOT</em>',
+    desc:'Ich kenne alle Dionesse-Produkte und Preise.',
+    ctaTitle:'Persönliche Hautanalyse', ctaSub:'Routine passend zu Ihrem Hauttyp',
+    sfTitle:'Hautanalyse',
+    l1:'Ihr Hauttyp?', l2:'Ihr Hautproblem?', l3:'Ihr Budget?',
+    next:'Weiter',
+    apiTitle:'Groq API-Schlüssel erforderlich (kostenlos)',
+    apiDesc:'Ein kostenloser Groq API-Schlüssel wird benötigt.',
+    apiSteps:'1. Gehen Sie zu <a href="https://console.groq.com" target="_blank">console.groq.com</a><br>2. Mit Google registrieren<br>3. API Key erstellen und einfügen',
+    apiBtn:'Aktivieren',
+    types:[['🫧','Fettig'],['🌵','Trocken'],['⚖️','Mischhaut'],['🌸','Empfindlich'],['✨','Normal']],
+    probs:[['🔴','Akne'],['🟤','Flecken'],['🕐','Falten'],['💧','Trockenheit'],['🔬','Große Poren'],['⚫','Mitesser'],['🌹','Rötungen'],['😐','Fahle Haut'],['⏳','Alterung']],
+    budgets:[['💚','Unter 500 TL'],['💛','500–1000 TL'],['🧡','1000–2000 TL'],['💜','Kein Budget-Limit']],
+    qs:[
+      {i:'ti-droplet',t:'Produkt anfragen',d:'Preis & Inhalt',m:'Erzähl von der Ziegenmilchseife'},
+      {i:'ti-crown',t:'Luxusprodukte',d:'Premium',m:'Was ist die Goldseife?'},
+      {i:'ti-tag',t:'Preis filtern',d:'Nach Budget',m:'Welche Produkte unter 500 TL?'},
+      {i:'ti-pencil',t:'Text schreiben',d:'Markeninhalt',m:'Schreib eine Einführung für Dionesse'},
+    ]
+  },
+  fr:{
+    flag:'🇫🇷', name:'Français',
+    sys:'Réponds toujours en français.',
+    ph:'Posez des questions sur les produits...',
+    hint:'Entrée pour envoyer',
+    clear:'Effacer', newChat:'Nouveau chat', skinBtn:'Analyse peau',
+    disc:'Dio BOT peut faire des erreurs. Veuillez vérifier.',
+    badge:'Assistant Dionesse',
+    h2:'Bonjour, je suis <em>Dio BOT</em>',
+    desc:'Je connais tous les produits et prix Dionesse.',
+    ctaTitle:'Analyse cutanée personnelle', ctaSub:'Routine personnalisée pour votre peau',
+    sfTitle:'Analyse de peau',
+    l1:'Votre type de peau?', l2:'Votre problème de peau?', l3:'Votre budget?',
+    next:'Continuer',
+    apiTitle:'Clé API Groq requise (gratuite)',
+    apiDesc:'Une clé API Groq gratuite est nécessaire.',
+    apiSteps:'1. Allez sur <a href="https://console.groq.com" target="_blank">console.groq.com</a><br>2. Inscrivez-vous avec Google<br>3. Créez une clé API et collez-la',
+    apiBtn:'Activer',
+    types:[['🫧','Grasse'],['🌵','Sèche'],['⚖️','Mixte'],['🌸','Sensible'],['✨','Normale']],
+    probs:[['🔴','Acné'],['🟤','Taches'],['🕐','Rides'],['💧','Sécheresse'],['🔬','Pores larges'],['⚫','Points noirs'],['🌹','Rougeurs'],['😐','Teint terne'],['⏳','Vieillissement']],
+    budgets:[['💚','Moins de 500 TL'],['💛','500–1000 TL'],['🧡','1000–2000 TL'],['💜','Pas de limite']],
+    qs:[
+      {i:'ti-droplet',t:'Produit',d:'Prix & ingrédients',m:'Parle-moi du savon lait de chèvre'},
+      {i:'ti-crown',t:'Luxe',d:'Premium',m:"Qu'est-ce que le savon or?"},
+      {i:'ti-tag',t:'Filtrer prix',d:'Budget',m:'Produits sous 500 TL?'},
+      {i:'ti-pencil',t:'Rédiger',d:'Contenu',m:'Écris une intro pour Dionesse'},
+    ]
+  },
+  ru:{
+    flag:'🇷🇺', name:'Русский',
+    sys:'Всегда отвечай на русском языке.',
+    ph:'Спрашивайте о продуктах и ценах...',
+    hint:'Enter для отправки',
+    clear:'Очистить чат', newChat:'Новый чат', skinBtn:'Анализ кожи',
+    disc:'Dio BOT может ошибаться. Проверяйте важную информацию.',
+    badge:'Ассистент Dionesse',
+    h2:'Привет, я <em>Dio BOT</em>',
+    desc:'Я знаю всё о продуктах и ценах Dionesse.',
+    ctaTitle:'Анализ кожи', ctaSub:'Подберём уход под ваш тип кожи',
+    sfTitle:'Анализ кожи',
+    l1:'Ваш тип кожи?', l2:'Проблема кожи?', l3:'Ваш бюджет?',
+    next:'Далее',
+    apiTitle:'Требуется ключ Groq API (бесплатно)',
+    apiDesc:'Для активации Dio BOT необходим бесплатный ключ Groq API.',
+    apiSteps:'1. Перейдите на <a href="https://console.groq.com" target="_blank">console.groq.com</a><br>2. Зарегистрируйтесь через Google<br>3. Создайте ключ API и вставьте его',
+    apiBtn:'Активировать',
+    types:[['🫧','Жирная'],['🌵','Сухая'],['⚖️','Комбинированная'],['🌸','Чувствительная'],['✨','Нормальная']],
+    probs:[['🔴','Акне'],['🟤','Пятна'],['🕐','Морщины'],['💧','Сухость'],['🔬','Поры'],['⚫','Чёрные точки'],['🌹','Покраснения'],['😐','Тусклая кожа'],['⏳','Старение']],
+    budgets:[['💚','До 500 TL'],['💛','500–1000 TL'],['🧡','1000–2000 TL'],['💜','Без ограничений']],
+    qs:[
+      {i:'ti-droplet',t:'Запрос',d:'Цена и состав',m:'Расскажи о мыле с козьим молоком'},
+      {i:'ti-crown',t:'Люкс',d:'Премиум',m:'Что такое золотое мыло?'},
+      {i:'ti-tag',t:'Фильтр цены',d:'По бюджету',m:'Продукты до 500 TL?'},
+      {i:'ti-pencil',t:'Написать текст',d:'Контент',m:'Напиши введение о Dionesse'},
+    ]
+  },
+  es:{
+    flag:'🇪🇸', name:'Español',
+    sys:'Responde siempre en español.',
+    ph:'Pregunta sobre productos y precios...',
+    hint:'Enter para enviar',
+    clear:'Borrar chat', newChat:'Nuevo chat', skinBtn:'Análisis de piel',
+    disc:'Dio BOT puede cometer errores. Por favor verifica.',
+    badge:'Asistente Dionesse',
+    h2:'Hola, soy <em>Dio BOT</em>',
+    desc:'Conozco todos los productos y precios de Dionesse.',
+    ctaTitle:'Análisis de piel personal', ctaSub:'Rutina personalizada para tu tipo de piel',
+    sfTitle:'Análisis de piel',
+    l1:'¿Tu tipo de piel?', l2:'¿Tu problema de piel?', l3:'¿Tu presupuesto?',
+    next:'Continuar',
+    apiTitle:'Se requiere clave API Groq (gratis)',
+    apiDesc:'Se necesita una clave API Groq gratuita.',
+    apiSteps:'1. Ve a <a href="https://console.groq.com" target="_blank">console.groq.com</a><br>2. Regístrate con Google<br>3. Crea la clave API y pégala',
+    apiBtn:'Activar',
+    types:[['🫧','Grasa'],['🌵','Seca'],['⚖️','Mixta'],['🌸','Sensible'],['✨','Normal']],
+    probs:[['🔴','Acné'],['🟤','Manchas'],['🕐','Arrugas'],['💧','Sequedad'],['🔬','Poros grandes'],['⚫','Puntos negros'],['🌹','Rojeces'],['😐','Piel apagada'],['⏳','Envejecimiento']],
+    budgets:[['💚','Menos de 500 TL'],['💛','500–1000 TL'],['🧡','1000–2000 TL'],['💜','Sin límite de presupuesto']],
+    qs:[
+      {i:'ti-droplet',t:'Consultar producto',d:'Precio e ingredientes',m:'Cuéntame del jabón de leche de cabra'},
+      {i:'ti-crown',t:'Productos de lujo',d:'Colección premium',m:'¿Qué es el jabón de oro?'},
+      {i:'ti-tag',t:'Filtrar precio',d:'Por presupuesto',m:'¿Qué productos cuestan menos de 500 TL?'},
+      {i:'ti-pencil',t:'Redactar texto',d:'Contenido de marca',m:'Escribe una introducción para Dionesse'},
+    ]
+  },
+  zh:{
+    flag:'🇨🇳', name:'中文',
+    sys:'始终用中文回答。',
+    ph:'询问产品、价格和推荐...',
+    hint:'Enter发送 · Shift+Enter换行',
+    clear:'清除对话', newChat:'新对话', skinBtn:'肤质分析',
+    disc:'Dio BOT可能出错，请核实重要信息。',
+    badge:'Dionesse品牌助手',
+    h2:'您好，我是 <em>Dio BOT</em>',
+    desc:'我了解所有Dionesse产品、价格和品牌信息。',
+    ctaTitle:'个人肤质分析', ctaSub:'根据您的肤质定制护肤方案',
+    sfTitle:'肤质分析',
+    l1:'您的肤质类型？', l2:'您的皮肤问题？', l3:'您的预算？',
+    next:'继续',
+    apiTitle:'需要Groq API密钥（免费）',
+    apiDesc:'激活Dio BOT需要免费的Groq API密钥。',
+    apiSteps:'1. 访问 <a href="https://console.groq.com" target="_blank">console.groq.com</a><br>2. 用Google注册<br>3. 创建API密钥并粘贴到下方',
+    apiBtn:'激活',
+    types:[['🫧','油性'],['🌵','干性'],['⚖️','混合性'],['🌸','敏感性'],['✨','中性']],
+    probs:[['🔴','痤疮'],['🟤','色斑'],['🕐','皱纹'],['💧','干燥'],['🔬','毛孔粗大'],['⚫','黑头'],['🌹','泛红'],['😐','暗沉'],['⏳','老化迹象']],
+    budgets:[['💚','500里拉以下'],['💛','500–1000里拉'],['🧡','1000–2000里拉'],['💜','不限预算']],
+    qs:[
+      {i:'ti-droplet',t:'查询产品',d:'价格和成分',m:'告诉我山羊奶皂的信息'},
+      {i:'ti-crown',t:'奢华产品',d:'高端系列',m:'黄金皂是什么？'},
+      {i:'ti-tag',t:'价格筛选',d:'按预算',m:'500里拉以下有哪些产品？'},
+      {i:'ti-pencil',t:'写文案',d:'品牌内容',m:'为Dionesse写一段简短介绍'},
+    ]
+  }
+};
+
+// ════════════════════════════════════════
+// DÖVİZ SİSTEMİ
+// ════════════════════════════════════════
+const CURR = {
+  tr:{code:'TRY',sym:'₺'}, en:{code:'USD',sym:'$'}, ar:{code:'SAR',sym:'ر.س'},
+  de:{code:'EUR',sym:'€'}, fr:{code:'EUR',sym:'€'}, ru:{code:'RUB',sym:'₽'},
+  es:{code:'EUR',sym:'€'}, zh:{code:'CNY',sym:'¥'}
+};
+const FALLBACK = {USD:0.028,SAR:0.105,EUR:0.026,RUB:2.55,CNY:0.203};
+let liveRates = {}, ratesFetched = 0;
+
+async function fetchRates() {
+  if (Date.now() - ratesFetched < 3600000 && Object.keys(liveRates).length) return;
+  try {
+    const r = await fetch('https://api.exchangerate-api.com/v4/latest/TRY');
+    const d = await r.json();
+    if (d.rates) { liveRates = d.rates; ratesFetched = Date.now(); }
+  } catch(e) {}
+}
+
+function getRate(code) {
+  if (code === 'TRY') return 1;
+  return liveRates[code] || FALLBACK[code] || 1;
+}
+
+function updateCurBadge() {
+  const c = CURR[curLang];
+  const badge = document.getElementById('curBadge');
+  const txt = document.getElementById('curBadgeText');
+  if (c.code === 'TRY') { badge.style.display = 'none'; return; }
+  const rate = getRate(c.code);
+  const isLive = !!liveRates[c.code];
+  badge.style.display = 'flex';
+  txt.textContent = `1₺ = ${c.sym}${rate.toFixed(4)} ${c.code}${isLive ? ' ●' : ''}`;
+}
+
+function curNote() {
+  const c = CURR[curLang];
+  if (c.code === 'TRY') return '';
+  const rate = getRate(c.code);
+  const isLive = liveRates[c.code] ? '(live rate)' : '(approx)';
+  return `\nPRICE FORMAT: Always show prices FIRST in Turkish Lira (₺), THEN in parentheses the ${c.code} equivalent ${isLive}. Example: "399 ₺ (≈ ${c.sym}${(399*rate).toFixed(2)} ${c.code})". Current rate: 1 TRY = ${rate.toFixed(4)} ${c.code}.`;
+}
+
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+let apiKey = localStorage.getItem('diobot_key') || '';
+let curLang = localStorage.getItem('diobot_lang') || 'tr';
+let history = [];
+let skinOpen = false;
+const skinData = {type:'', probs:[], budget:''};
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+if (apiKey) document.getElementById('apiBanner').style.display = 'none';
+applyAll(curLang);
+fetchRates().then(updateCurBadge);
+
+// ════════════════════════════════════════
+// DİL
+// ════════════════════════════════════════
+function toggleDrop() { document.getElementById('langDrop').classList.toggle('open'); }
+document.addEventListener('click', e => { if (!e.target.closest('.lang-wrap')) document.getElementById('langDrop').classList.remove('open'); });
+
+function setLang(l, btn) {
+  curLang = l;
+  localStorage.setItem('diobot_lang', l);
+  document.querySelectorAll('.lang-opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('langDrop').classList.remove('open');
+  applyAll(l);
+  updateCurBadge();
+}
+
+function applyAll(l) {
+  const t = L[l];
+  // Header
+  document.getElementById('curFlag').textContent = t.flag;
+  document.getElementById('curLangName').textContent = t.name;
+  // Inputs
+  document.getElementById('inp').placeholder = t.ph;
+  document.getElementById('hintLbl').textContent = t.hint;
+  document.getElementById('clearLbl').textContent = t.clear;
+  document.getElementById('newChatLbl').textContent = t.newChat;
+  document.getElementById('skinBtnLbl').textContent = t.skinBtn;
+  document.getElementById('discLbl').textContent = t.disc;
+  // API Banner
+  document.getElementById('apiTitle').textContent = t.apiTitle;
+  document.getElementById('apiDesc').textContent = t.apiDesc;
+  document.getElementById('apiSteps').innerHTML = t.apiSteps;
+  document.getElementById('apiSaveBtn').textContent = t.apiBtn;
+  // Skin form
+  document.getElementById('sfTitle').textContent = t.sfTitle;
+  document.getElementById('sfL1').textContent = t.l1;
+  document.getElementById('sfL2').textContent = t.l2;
+  document.getElementById('sfL3').textContent = t.l3;
+  document.getElementById('sfNextLbl').textContent = t.next;
+  // Welcome (sadece gösteriliyorsa)
+  const w = document.getElementById('welcome');
+  if (w) {
+    document.getElementById('wBadge').textContent = t.badge;
+    document.getElementById('wTitle').innerHTML = t.h2;
+    document.getElementById('wDesc').innerHTML = t.desc;
+    document.getElementById('skinCtaTitle').textContent = t.ctaTitle;
+    document.getElementById('skinCtaSub').textContent = t.ctaSub;
+    document.getElementById('qgrid').innerHTML = t.qs.map(q =>
+      `<button class="qcard" onclick="quickAsk(${JSON.stringify(q.m)})">
+        <i class="ti ${q.i}"></i>
+        <div class="qt">${q.t}</div>
+        <div class="qd">${q.d}</div>
+      </button>`
+    ).join('');
+  }
+  // Skin opts
+  renderSkinOpts(l);
+  // Comp labels
+  updateCompLabels();
+}
+
+// ════════════════════════════════════════
+// CİLT ANALİZİ
+// ════════════════════════════════════════
+function renderSkinOpts(l) {
+  const t = L[l];
+  const o1 = document.getElementById('sfOpts1');
+  const o2 = document.getElementById('sfOpts2');
+  const o3 = document.getElementById('sfOpts3');
+  if (!o1) return;
+  o1.innerHTML = t.types.map(([em,lb]) => `<button class="sf-opt" onclick="pickType(${JSON.stringify(lb)},this)">${em} ${lb}</button>`).join('');
+  o2.innerHTML = t.probs.map(([em,lb]) => `<button class="sf-opt" onclick="toggleProb(${JSON.stringify(lb)},this)">${em} ${lb}</button>`).join('');
+  o3.innerHTML = t.budgets.map(([em,lb]) => `<button class="sf-opt" onclick="pickBudget(${JSON.stringify(lb)},this)">${em} ${lb}</button>`).join('');
+}
+
+function toggleSkin() {
+  skinOpen ? closeSkin() : openSkin();
+}
+
+function openSkin() {
+  if (compOpen) closeComp();
+  skinData.type = ''; skinData.probs = []; skinData.budget = '';
+  document.querySelectorAll('.sf-opt').forEach(b => b.classList.remove('sel'));
+  goStep(1);
+  document.getElementById('skinForm').classList.add('open');
+  document.getElementById('skinToolBtn').classList.add('on');
+  skinOpen = true;
+}
+
+function closeSkin() {
+  document.getElementById('skinForm').classList.remove('open');
+  document.getElementById('skinToolBtn').classList.remove('on');
+  skinOpen = false;
+}
+
+function goStep(n) {
+  document.querySelectorAll('.sf-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  [1,2,3].forEach(i => document.getElementById('d'+i).classList.toggle('done', i <= n));
+}
+
+function pickType(val, btn) {
+  skinData.type = val;
+  document.querySelectorAll('#sfOpts1 .sf-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  setTimeout(() => goStep(2), 250);
+}
+
+function toggleProb(val, btn) {
+  btn.classList.toggle('sel');
+  if (btn.classList.contains('sel')) { if (!skinData.probs.includes(val)) skinData.probs.push(val); }
+  else { skinData.probs = skinData.probs.filter(v => v !== val); }
+}
+
+function pickBudget(val, btn) {
+  skinData.budget = val;
+  document.querySelectorAll('#sfOpts3 .sf-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  setTimeout(() => {
+    closeSkin();
+    const probs = skinData.probs.length ? skinData.probs.join(', ') : 'genel bakım';
+    quickAsk(`Cilt tipim: ${skinData.type}. Sorunum: ${probs}. Bütçem: ${skinData.budget}. Bana Dionesse ürünlerinden kişisel cilt bakım rutini öner. Her ürün için fiyat, neden önerdiğin ve nasıl kullanacağımı açıkla.`);
+  }, 250);
+}
+
+// ════════════════════════════════════════
+// MESAJLAR
+// ════════════════════════════════════════
+function quickAsk(text) {
+  document.getElementById('inp').value = text;
+  send();
+}
+
+// ════════════════════════════════════════
+// ÜRÜN URL HARİTASI
+// ════════════════════════════════════════
+const PROD_URLS = {
+  'Keçi Sütü Sabunu':'https://dionesse.com/products/dionesse-keci-sutu-sabunu',
+  'Eşek Sütü Sabunu':'https://dionesse.com/products/dionesse-esek-sutu-sabunu',
+  'Deve Sütü Sabunu':'https://dionesse.com/products/dionesse-deve-sutu-sabunu',
+  'Lifli Ballı Eşek Sütü Sabunu':'https://dionesse.com/products/dionesse-lifli-balli-esek-sutu-sabunu',
+  'Lifli Ballı ve Eşek Sütü Sabunu':'https://dionesse.com/products/dionesse-lifli-balli-esek-sutu-sabunu',
+  'Ballı Sütlü Sabun':'https://dionesse.com/products/dionesse-balli-sutlu-sabun',
+  'Lifli Ballı ve Sütlü Sabun':'https://dionesse.com/products/dionesse-lifli-balli-sutlu-sabun',
+  'Lifli Ballı Sütlü Sabun':'https://dionesse.com/products/dionesse-lifli-balli-sutlu-sabun',
+  'Kayısı Sabunu':'https://dionesse.com/products/dionesse-kayisi-sabunu',
+  'Aloe Vera Sabunu':'https://dionesse.com/products/dionesse-aloe-vera-sabunu',
+  'Lifli Aloe Vera Sabunu':'https://dionesse.com/products/dionesse-lifli-aloevera-sabunu',
+  'Lifli Gül Sabunu':'https://dionesse.com/products/dionesse-lifli-gul-sabunu',
+  'Lifli Limon Sabunu':'https://dionesse.com/products/dionesse-lifli-limon-sabunu',
+  'Papatya Sabunu':'https://dionesse.com/products/dionesse-papatya-sabunu',
+  'Lavanta Sabunu':'https://dionesse.com/products/dionesse-lavanta-sabunu',
+  'Leylak Sabunu':'https://dionesse.com/products/dionesse-leylak-sabunu',
+  'Orkide Sabunu':'https://dionesse.com/products/dionesse-orkide-sabunu',
+  'Portakal Sabunu':'https://dionesse.com/products/dionesse-portakal-sabunu',
+  'Nar Sabunu':'https://dionesse.com/products/dionesse-nar-kaymak-sabunu',
+  'Sarımsak Sabunu':'https://dionesse.com/products/dionesse-sarimsak-sabunu',
+  'Hindistan Cevizi Sabunu':'https://dionesse.com/products/dionesse-hindistan-cevizi-sabunu',
+  'Argan Sabunu':'https://dionesse.com/products/dionesse-argan-sabunu',
+  'Defne Yapraklı Sabun':'https://dionesse.com/products/dionesse-defne-yaprakli-sabun',
+  'Zeytin Yapraklı Sabun':'https://dionesse.com/products/dionesse-zeytin-yaprakli-sabun',
+  'Reishi Mantarı Sabunu':'https://dionesse.com/products/dionesse-reishi-mantari-sabunu',
+  'Çay Ağacı Sabunu':'https://dionesse.com/products/cay-agaci-sabunu',
+  'Kükürt Sabunu':'https://dionesse.com/products/dionesse-kukurt-sabunu',
+  'Shea Butter Sabunu':'https://dionesse.com/products/dionesse-shea-butter-sabunu',
+  'Nioli Sabunu':'https://dionesse.com/products/nioli-sabunu',
+  'Kolajen Sabunu':'https://dionesse.com/products/kolajen-sabunu',
+  'Bebek Sabunu':'https://dionesse.com/products/dionesse-bebek-sabunu',
+  'Yeşil Kil Elma Sabunu':'https://dionesse.com/products/yesil-kil-elma-sabunu',
+  'Siyah Kil Okaliptüs Sabunu':'https://dionesse.com/products/siyah-kil-okaliptus-sabunu-120-gr',
+  'Sarı Kil Limon Sabunu':'https://dionesse.com/products/sari-kil-limon-sabunu',
+  'Mor Kil Lavanta Sabunu':'https://dionesse.com/products/mor-kil-lavanta-sabunu',
+  'Pembe Kil Portakal Sabunu':'https://dionesse.com/products/pembe-kil-portakal-sabunu',
+  'Kırmızı Kil Biberiye Sabunu':'https://dionesse.com/products/kirmizi-kil-biberiye-sabunu',
+  'Ardıç Katranı Sabunu':'https://dionesse.com/products/dionesse-ardic-katrani-sabunu',
+  'Deniz Süngerli Orkide Sabunu':'https://dionesse.com/products/deniz-sungerli-orkide-sabunu',
+  'Deniz Süngerli Kayısı Sabunu':'https://dionesse.com/products/deniz-sungerli-kayisi-sabunu',
+  'Altın Sabun':'https://dionesse.com/products/dionesse-altin-sabun-golden-touch-kok-hucreli-sabun',
+  'Vitamin C Serum':'https://dionesse.com/products/vitamin-c-serum',
+  'NovoRetin Vitamin A Serum':'https://dionesse.com/products/novoretin-serum',
+  'Dudak Bakım Serumu':'https://dionesse.com/products/dudak-bakim-serumu',
+  'Göz Çevresi ve Leke Karşıtı Serum':'https://dionesse.com/products/aydinlatici-goz-cevresi-ve-leke-karsiti-serum',
+  'Aydınlatıcı Göz Çevresi ve Leke Karşıtı Serum':'https://dionesse.com/products/aydinlatici-goz-cevresi-ve-leke-karsiti-serum',
+  '24K Golden Touch Serum':'https://dionesse.com/products/24k-golden-touch-serum',
+  '24K Golden Touch Yağ':'https://dionesse.com/products/24k-golden-touch-yag',
+  'SPF30 Yaşlanma Karşıtı Yüz Kremi':'https://dionesse.com/products/mousturizing-antiaging-cream-spf30',
+  'SPF+30 Yaşlanma Karşıtı Nemlendirici Yüz Kremi':'https://dionesse.com/products/mousturizing-antiaging-cream-spf30',
+  'Vitamin Kolajen Gündüz Kremi':'https://dionesse.com/products/vitamin-care-cream-boosts-collagen-production',
+  'Vitamin Destekli Kolajen Gündüz Bakım Kremi':'https://dionesse.com/products/vitamin-care-cream-boosts-collagen-production',
+  'SPF50+ Mineral Güneş Kremi':'https://dionesse.com/products/dionesse-gunes-kremi',
+  'SPF 50+ Mineral Kalkanı Güneş Kremi':'https://dionesse.com/products/dionesse-gunes-kremi',
+  '5 Çiçek Siyah Arı Balı Tonik':'https://dionesse.com/products/black-bee-5-cicek-detoks-tonigi',
+  'Saf Gül Suyu':'https://dionesse.com/products/dionesse-100-saf-gul-suyu-100ml',
+  'Sarı Kil Kolajen Maske':'https://dionesse.com/products/kolajen-artiran-detoks-sari-kil-100gr',
+  'Sarı Kil Canlandırıcı Kolajen Maske':'https://dionesse.com/products/kolajen-artiran-detoks-sari-kil-100gr',
+  'Yüz Temizleme Jeli':'https://dionesse.com/products/face-cleansing-liquid-swiss-alps-black-bee-honey',
+  'Çay Ağacı Uçucu Yağı':'https://dionesse.com/products/cay-agaci-ucucu-yagi',
+  'Ylang Ylang Uçucu Yağı':'https://dionesse.com/products/ylang-ylang-ucucu-yagi',
+  'Sedir Ağacı Uçucu Yağı':'https://dionesse.com/products/sedir-agaci-ucucu-yagi',
+  'Portakal Kabuğu Uçucu Yağı':'https://dionesse.com/products/portakal-kabugu-ucucu-yagi',
+  'Anti-Aging Bakım Seti':'https://dionesse.com/products/yogun-anti-aging-bakim-seti',
+  'Yoğun Anti-Aging Bakım Seti':'https://dionesse.com/products/yogun-anti-aging-bakim-seti',
+};
+
+const SITE_BTN_LABELS = {
+  tr:'Siteye Git', en:'Visit Site', ar:'زيارة الموقع',
+  de:'Zur Website', fr:'Voir le site', ru:'На сайт',
+  es:'Ver sitio', zh:'访问网站'
+};
+
+// Kategori URL'leri - ürün bulunamazsa koleksiyona git
+const CAT_URLS = {
+  'sabun': 'https://dionesse.com/collections/dogal-sabunlar',
+  'serum': 'https://dionesse.com/collections/serumlar',
+  'krem':  'https://dionesse.com/collections/kremler',
+  'tonik': 'https://dionesse.com/collections/tonikler',
+  'maske': 'https://dionesse.com/collections/kil-maskeler',
+  'aroma': 'https://dionesse.com/collections/aromaterapi-yaglari',
+  'set':   'https://dionesse.com/collections/rutin-setler',
+};
+
+function detectProducts(text) {
+  const found = [];
+  const lower = text.toLowerCase();
+  for (const [name, url] of Object.entries(PROD_URLS)) {
+    if (lower.includes(name.toLowerCase()) && !found.find(f => f.name === name)) {
+      found.push({name, url});
+    }
+  }
+  return found.slice(0, 5);
+}
+
+function addMsg(text, role) {
+  const w = document.getElementById('welcome');
+  if (w) w.remove();
+  const msgs = document.getElementById('msgs');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const av = role === 'bot'
+    ? '<div class="av bot">D</div>'
+    : '<div class="av user"><i class="ti ti-user"></i></div>';
+  const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+
+  // Bot mesajında ürün linkleri tespit et
+  let btns = '';
+  if (role === 'bot') {
+    const prods = detectProducts(text);
+    if (prods.length > 0) {
+      const label = SITE_BTN_LABELS[curLang] || 'Siteye Git';
+      btns = `<div class="prod-btns">${prods.map(p =>
+        `<a class="prod-link-btn" href="${p.url}" target="_blank" rel="noopener">
+          <i class="ti ti-external-link"></i> ${p.name}
+        </a>`
+      ).join('')}</div>`;
+    }
+  }
+
+  div.innerHTML = `${av}<div class="bubble">${safe}${btns}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addTyping() {
+  const w = document.getElementById('welcome');
+  if (w) w.remove();
+  const msgs = document.getElementById('msgs');
+  const div = document.createElement('div');
+  div.className = 'msg bot'; div.id = 'typing';
+  div.innerHTML = '<div class="av bot">D</div><div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function clearChat() {
+  if (!confirm(L[curLang].clear + '?')) return;
+  newChat();
+}
+
+function newChat() {
+  history = [];
+  const msgs = document.getElementById('msgs');
+  msgs.innerHTML = '';
+  const w = document.createElement('div');
+  w.id = 'welcome'; w.className = 'welcome';
+  w.innerHTML = `
+    <div class="w-badge" id="wBadge"></div>
+    <h2 id="wTitle"></h2>
+    <p id="wDesc"></p>
+    <div class="qgrid" id="qgrid"></div>
+    <button class="skin-cta" onclick="toggleSkin()">
+      <div class="skin-cta-icon">✨</div>
+      <div><div class="stitle" id="skinCtaTitle"></div><div class="ssub" id="skinCtaSub"></div></div>
+      <i class="ti ti-arrow-right arrow"></i>
+    </button>`;
+  msgs.appendChild(w);
+  applyAll(curLang);
+}
+
+// ════════════════════════════════════════
+// KARŞILAŞTIRMA
+// ════════════════════════════════════════
+const PROD_NAMES = [
+  'Keçi Sütü Sabunu','Eşek Sütü Sabunu','Deve Sütü Sabunu','Lifli Ballı Eşek Sütü Sabunu',
+  'Ballı Sütlü Sabun','Kayısı Sabunu','Aloe Vera Sabunu','Lifli Aloe Vera Sabunu',
+  'Lifli Gül Sabunu','Lifli Limon Sabunu','Papatya Sabunu','Lavanta Sabunu',
+  'Leylak Sabunu','Orkide Sabunu','Portakal Sabunu','Nar Sabunu','Sarımsak Sabunu',
+  'Hindistan Cevizi Sabunu','Argan Sabunu','Defne Yapraklı Sabun','Zeytin Yapraklı Sabun',
+  'Reishi Mantarı Sabunu','Çay Ağacı Sabunu','Kükürt Sabunu','Shea Butter Sabunu',
+  'Nioli Sabunu','Kolajen Sabunu','Bebek Sabunu','Yeşil Kil Elma Sabunu',
+  'Siyah Kil Okaliptüs Sabunu','Sarı Kil Limon Sabunu','Mor Kil Lavanta Sabunu',
+  'Pembe Kil Portakal Sabunu','Kırmızı Kil Biberiye Sabunu','Ardıç Katranı Sabunu',
+  'Deniz Süngerli Orkide Sabunu','Deniz Süngerli Kayısı Sabunu','Altın Sabun',
+  'Vitamin C Serum','NovoRetin Vitamin A Serum','Dudak Bakım Serumu',
+  'Göz Çevresi ve Leke Karşıtı Serum','24K Golden Touch Serum','24K Golden Touch Yağ',
+  'SPF30 Yaşlanma Karşıtı Yüz Kremi','Vitamin Kolajen Gündüz Kremi','SPF50+ Mineral Güneş Kremi',
+  '5 Çiçek Siyah Arı Balı Tonik','Saf Gül Suyu','Sarı Kil Kolajen Maske',
+  'Yüz Temizleme Jeli','Çay Ağacı Uçucu Yağı','Ylang Ylang Uçucu Yağı',
+  'Sedir Ağacı Uçucu Yağı','Portakal Kabuğu Uçucu Yağı','Anti-Aging Bakım Seti'
+];
+
+let compOpen = false;
+
+function initCompDatalist() {
+  ['prodList1','prodList2'].forEach(id => {
+    const dl = document.getElementById(id);
+    if (dl) dl.innerHTML = PROD_NAMES.map(n => `<option value="${n}">`).join('');
+  });
+}
+initCompDatalist();
+
+function toggleComp() {
+  compOpen ? closeComp() : openComp();
+}
+
+function openComp() {
+  // Skin form açıksa kapat
+  if (skinOpen) closeSkin();
+  document.getElementById('compForm').classList.add('open');
+  document.getElementById('compToolBtn').classList.add('on');
+  document.getElementById('compInp1').focus();
+  compOpen = true;
+}
+
+function closeComp() {
+  document.getElementById('compForm').classList.remove('open');
+  document.getElementById('compToolBtn').classList.remove('on');
+  compOpen = false;
+}
+
+function runComp() {
+  const p1 = document.getElementById('compInp1').value.trim();
+  const p2 = document.getElementById('compInp2').value.trim();
+  if (!p1 || !p2) { alert('Lütfen iki ürün adı girin.'); return; }
+  closeComp();
+  const prompt = `Dionesse'in şu iki ürününü karşılaştır: "${p1}" ve "${p2}".
+Şu başlıklar altında karşılaştır:
+- Fiyat
+- Cilt tipi (kim için uygun)
+- Ana faydalar
+- İçerik/teknoloji
+- Öne çıkan özellik
+- Hangisini kim tercih etmeli?
+
+Yanıtını net ve sade bir şekilde ver. Her başlık için her iki ürünü de açıkla.`;
+  quickAsk(prompt);
+}
+
+// Comp form'u applyAll içinde de güncelleyelim
+function updateCompLabels() {
+  const labels = {
+    tr:{title:'Ürün Karşılaştır',l1:'1. Ürün',l2:'2. Ürün',btn:'Karşılaştır',toolBtn:'Karşılaştır',ph1:'örn: Keçi Sütü Sabunu',ph2:'örn: Eşek Sütü Sabunu'},
+    en:{title:'Compare Products',l1:'Product 1',l2:'Product 2',btn:'Compare',toolBtn:'Compare',ph1:'e.g. Goat Milk Soap',ph2:'e.g. Donkey Milk Soap'},
+    ar:{title:'مقارنة المنتجات',l1:'المنتج الأول',l2:'المنتج الثاني',btn:'قارن',toolBtn:'مقارنة',ph1:'مثل: صابون حليب الماعز',ph2:'مثل: صابون حليب الحمير'},
+    de:{title:'Produkte vergleichen',l1:'Produkt 1',l2:'Produkt 2',btn:'Vergleichen',toolBtn:'Vergleichen',ph1:'z.B. Ziegenmilchseife',ph2:'z.B. Eselsmilchseife'},
+    fr:{title:'Comparer les produits',l1:'Produit 1',l2:'Produit 2',btn:'Comparer',toolBtn:'Comparer',ph1:'ex: Savon lait de chèvre',ph2:'ex: Savon lait d\'ânesse'},
+    ru:{title:'Сравнить продукты',l1:'Продукт 1',l2:'Продукт 2',btn:'Сравнить',toolBtn:'Сравнить',ph1:'напр: Мыло с козьим молоком',ph2:'напр: Мыло с ослиным молоком'},
+    es:{title:'Comparar productos',l1:'Producto 1',l2:'Producto 2',btn:'Comparar',toolBtn:'Comparar',ph1:'ej: Jabón de leche de cabra',ph2:'ej: Jabón de leche de burra'},
+    zh:{title:'比较产品',l1:'产品1',l2:'产品2',btn:'比较',toolBtn:'比较',ph1:'例：山羊奶皂',ph2:'例：驴奶皂'},
+  };
+  const c = labels[curLang] || labels.tr;
+  const t = document.getElementById('compTitle');
+  const l1 = document.getElementById('compL1');
+  const l2 = document.getElementById('compL2');
+  const btn = document.getElementById('compBtn');
+  const toolBtn = document.getElementById('compBtnLbl');
+  const i1 = document.getElementById('compInp1');
+  const i2 = document.getElementById('compInp2');
+  if (t) t.textContent = c.title;
+  if (l1) l1.textContent = c.l1;
+  if (l2) l2.textContent = c.l2;
+  if (btn) { btn.querySelector('span') ? btn.querySelector('span').textContent = c.btn : btn.lastChild.textContent = c.btn; }
+  if (toolBtn) toolBtn.textContent = c.toolBtn;
+  if (i1) i1.placeholder = c.ph1;
+  if (i2) i2.placeholder = c.ph2;
+}
+
+// ════════════════════════════════════════
+// API KEY
+// ════════════════════════════════════════
+function saveKey() {
+  const v = document.getElementById('apiInp').value.trim();
+  if (!v.startsWith('gsk_')) { alert('Geçersiz anahtar — "gsk_" ile başlamalı'); return; }
+  apiKey = v;
+  localStorage.setItem('diobot_key', apiKey);
+  document.getElementById('apiBanner').style.display = 'none';
+}
+
+// ════════════════════════════════════════
+// GÖNDER
+// ════════════════════════════════════════
+const DIONESSE = `Dionesse — dionesse.com | Swiss Quality | Halal | COSMOS | NATRUE | Clean Beauty
+Kargo: Aynı gün, 1500 TL üzeri ücretsiz | Puan: 4.9/5
+SABUNLAR: Keçi Sütü 399TL, Eşek Sütü 399TL, Deve Sütü 399TL, Lifli Ballı Eşek Sütü 449TL, Ballı Sütlü 399TL, Kayısı 399TL, Aloe Vera 399TL, Lifli Aloe Vera 449TL, Lifli Gül 449TL, Lifli Limon 449TL, Papatya 399TL, Lavanta 399TL, Leylak 399TL, Orkide 399TL, Portakal 399TL, Nar 399TL, Sarımsak 399TL, Hindistan Cevizi 399TL, Argan 399TL, Defne 399TL, Zeytin 399TL, Reishi 399TL, Çay Ağacı 399TL, Kükürt 399TL, Shea Butter 399TL, Nioli 399TL, Kolajen 399TL, Bebek 399TL, Yeşil Kil Elma 429TL, Siyah Kil Okaliptüs 429TL, Sarı Kil Limon 429TL, Mor Kil Lavanta 429TL, Pembe Kil Portakal 429TL, Kırmızı Kil Biberiye 429TL, Ardıç Katranı 399TL, Deniz Süngerli Orkide 900TL, Deniz Süngerli Kayısı 900TL, Altın Sabun 7900TL(PhytoCellTec kök hücre teknolojisi, ultra lüks anti-aging)
+SERUMLAR: Vitamin C 990TL(NanoWhite,leke karşıtı), NovoRetin Vitamin A 1100TL(doğal retinol), Dudak 900TL(LIPerfection,dolgunlaştırıcı), Göz Çevresi 1250TL(Delentigo), 24K Golden Touch Serum 1200TL, 24K Golden Touch Yağ 1100TL
+KREMLER: SPF30 Anti-Aging 1900TL(PhytoCellTec+MossCellTec), Vitamin Kolajen 1900TL, SPF50+ Güneş 970TL
+TONİKLER: 5 Çiçek Arı Balı Tonik 970TL(Black BeeOme), Saf Gül Suyu 780TL
+KİL MASKE: Sarı Kil Kolajen 850TL
+TEMİZLEME: Yüz Temizleme Jeli 900TL(Black Bee Honey)
+AROMATERAPİ: Çay Ağacı 760TL, Ylang Ylang 1470TL, Sedir 800TL, Portakal 800TL
+SETLER: Anti-Aging Bakım Seti 9900TL
+İSVİÇRE TEKNOLOJİLERİ: Black BeeOme, PhytoCellTec, MossCellTec, NovoRetin, NanoWhite, Delentigo, LIPerfection, AquaCacteen, Happybelle-PE, Pinolumin, Alpine Rose Active`;
+
+async function send() {
+  if (!apiKey) { alert('Lütfen önce Groq API anahtarınızı girin.'); return; }
+  const inp = document.getElementById('inp');
+  const text = inp.value.trim();
+  if (!text) return;
+  addMsg(text, 'user');
+  history.push({role:'user', content:text});
+  inp.value = ''; inp.style.height = '24px';
+  addTyping();
+  const sysPrompt = `Sen "Dio BOT"sun — Dionesse markasının resmi AI asistanısın. ${L[curLang].sys} Sadece Dionesse ile ilgili konularda yardım et. Ürün önerirken fiyat, içerik ve kullanım bilgisi ver. Samimi ve profesyonel ol.${curNote()}\n\nDionesse veritabanı:\n${DIONESSE}`;
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile', max_tokens:1024, messages:[{role:'system',content:sysPrompt},...history]})
+    });
+    const data = await res.json();
+    document.getElementById('typing')?.remove();
+    if (data.error) { addMsg('Hata: '+(data.error.message||'API hatası'), 'bot'); return; }
+    const reply = data.choices?.[0]?.message?.content || 'Yanıt alınamadı.';
+    history.push({role:'assistant', content:reply});
+    addMsg(reply, 'bot');
+  } catch(err) {
+    document.getElementById('typing')?.remove();
+    addMsg('Bağlantı hatası: '+err.message, 'bot');
+  }
+}
+</script>
+</body>
+</html>

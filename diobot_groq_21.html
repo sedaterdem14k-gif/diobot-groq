@@ -322,7 +322,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--c2);colo
 const L = {
   tr:{
     flag:'🇹🇷', name:'Türkçe',
-    sys:'Her zaman Türkçe yanıt ver.',
+    sys:'ZORUNLU: Her zaman yalnızca Türkçe yanıt ver.',
     role:'Sen "Dio BOT"sun — Dionesse markasının resmi AI asistanısın. Sadece Dionesse ile ilgili konularda yardım et. Ürün önerirken fiyat, içerik ve kullanım bilgisi ver. Samimi ve profesyonel ol.',
     ph:'Soru sorun, öneri isteyin...',
     hint:'Enter gönder · Shift+Enter yeni satır',
@@ -353,7 +353,7 @@ const L = {
   },
   en:{
     flag:'🇬🇧', name:'English',
-    sys:'Always respond in English.',
+    sys:'CRITICAL: You MUST respond ONLY in English. Never respond in Turkish even if the database is in Turkish.',
     role:'You are "Dio BOT" — the official AI assistant of the Dionesse brand. Help only with Dionesse-related topics. When recommending products, provide price, ingredients and usage info. Be warm and professional.',
     ph:'Ask about products, prices...',
     hint:'Enter to send · Shift+Enter new line',
@@ -384,7 +384,7 @@ const L = {
   },
   ar:{
     flag:'🇸🇦', name:'العربية',
-    sys:'أجب دائماً باللغة العربية.',
+    sys:'مهم جداً: يجب أن تجيب دائماً باللغة العربية فقط. لا تجب بالتركية أبداً حتى لو كانت قاعدة البيانات بالتركية.',
     role:'أنت "Dio BOT" — المساعد الذكاء الاصطناعي الرسمي لعلامة Dionesse. ساعد فقط في مواضيع تتعلق بـ Dionesse. عند التوصية بالمنتجات قدم السعر والمكونات ومعلومات الاستخدام. كن ودياً ومحترفاً.',
     ph:'اسأل عن المنتجات والأسعار...',
     hint:'Enter للإرسال',
@@ -415,7 +415,7 @@ const L = {
   },
   de:{
     flag:'🇩🇪', name:'Deutsch',
-    sys:'Antworte immer auf Deutsch.',
+    sys:'WICHTIG: Antworte IMMER nur auf Deutsch. Antworte NIEMALS auf Türkisch, auch wenn die Datenbank auf Türkisch ist.',
     role:'Du bist "Dio BOT" — der offizielle KI-Assistent der Marke Dionesse. Hilf nur bei Dionesse-bezogenen Themen. Bei Produktempfehlungen gib Preis, Inhaltsstoffe und Anwendungshinweise an. Sei freundlich und professionell.',
     ph:'Fragen Sie nach Produkten...',
     hint:'Enter senden · Shift+Enter neue Zeile',
@@ -446,7 +446,7 @@ const L = {
   },
   fr:{
     flag:'🇫🇷', name:'Français',
-    sys:'Réponds toujours en français.',
+    sys:'IMPORTANT: Tu dois TOUJOURS répondre uniquement en français. Ne réponds JAMAIS en turc même si la base de données est en turc.',
     role:'Tu es "Dio BOT" — l\'assistant IA officiel de la marque Dionesse. Aide uniquement sur les sujets liés à Dionesse. Lors de recommandations fournis le prix, les ingrédients et les conseils d\'utilisation. Sois chaleureux et professionnel.',
     ph:'Posez des questions sur les produits...',
     hint:'Entrée pour envoyer',
@@ -477,7 +477,7 @@ const L = {
   },
   ru:{
     flag:'🇷🇺', name:'Русский',
-    sys:'Всегда отвечай на русском языке.',
+    sys:'ВАЖНО: Всегда отвечай ТОЛЬКО на русском языке. НИКОГДА не отвечай по-турецки, даже если база данных на турецком.',
     role:'Ты "Dio BOT" — официальный ИИ-ассистент бренда Dionesse. Помогай только по темам, связанным с Dionesse. При рекомендации продуктов указывай цену, состав и способ применения. Будь дружелюбным и профессиональным.',
     ph:'Спрашивайте о продуктах и ценах...',
     hint:'Enter для отправки',
@@ -508,7 +508,7 @@ const L = {
   },
   es:{
     flag:'🇪🇸', name:'Español',
-    sys:'Responde siempre en español.',
+    sys:'IMPORTANTE: Responde SIEMPRE solo en español. NUNCA respondas en turco aunque la base de datos esté en turco.',
     role:'Eres "Dio BOT" — el asistente de IA oficial de la marca Dionesse. Ayuda solo con temas relacionados con Dionesse. Al recomendar productos proporciona precio, ingredientes e instrucciones de uso. Sé cálido y profesional.',
     ph:'Pregunta sobre productos y precios...',
     hint:'Enter para enviar',
@@ -539,7 +539,7 @@ const L = {
   },
   zh:{
     flag:'🇨🇳', name:'中文',
-    sys:'始终用中文回答。',
+    sys:'重要：必须始终只用中文回答。即使数据库是土耳其语也绝不用土耳其语回答。',
     role:'你是"Dio BOT"——Dionesse品牌的官方AI助手。只帮助与Dionesse相关的话题。推荐产品时提供价格、成分和使用方法。态度热情专业。',
     ph:'询问产品、价格和推荐...',
     hint:'Enter发送 · Shift+Enter换行',
@@ -1065,7 +1065,7 @@ async function send() {
   history.push({role:'user', content:text});
   inp.value = ''; inp.style.height = '24px';
   addTyping();
-  const sysPrompt = `${L[curLang].sys} ${L[curLang].role}${curNote()}\n\nDionesse database:\n${DIONESSE}`;
+  const sysPrompt = `${L[curLang].sys} ${L[curLang].role}${curNote()}\n\nDionesse database:\n${DIONESSE}\n\nREMEMBER: ${L[curLang].sys}`;
   try {
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method:'POST',

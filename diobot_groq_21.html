@@ -677,13 +677,17 @@ function applyAll(l) {
     document.getElementById('wDesc').innerHTML = t.desc;
     document.getElementById('skinCtaTitle').textContent = t.ctaTitle;
     document.getElementById('skinCtaSub').textContent = t.ctaSub;
-    document.getElementById('qgrid').innerHTML = t.qs.map(q =>
-      `<button class="qcard" onclick="quickAsk(${JSON.stringify(q.m)})">
+    const grid = document.getElementById('qgrid');
+    grid.innerHTML = t.qs.map(q =>
+      `<button class="qcard">
         <i class="ti ${q.i}"></i>
         <div class="qt">${q.t}</div>
         <div class="qd">${q.d}</div>
       </button>`
     ).join('');
+    grid.querySelectorAll('.qcard').forEach((btn, i) => {
+      btn.addEventListener('click', () => quickAsk(t.qs[i].m));
+    });
   }
   // Skin opts
   renderSkinOpts(l);

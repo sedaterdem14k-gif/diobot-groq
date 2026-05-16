@@ -323,6 +323,7 @@ const L = {
   tr:{
     flag:'🇹🇷', name:'Türkçe',
     sys:'Her zaman Türkçe yanıt ver.',
+    role:'Sen "Dio BOT"sun — Dionesse markasının resmi AI asistanısın. Sadece Dionesse ile ilgili konularda yardım et. Ürün önerirken fiyat, içerik ve kullanım bilgisi ver. Samimi ve profesyonel ol.',
     ph:'Soru sorun, öneri isteyin...',
     hint:'Enter gönder · Shift+Enter yeni satır',
     clear:'Sohbeti Sil', newChat:'Yeni Sohbet', skinBtn:'Cilt Analizi',
@@ -351,6 +352,7 @@ const L = {
   en:{
     flag:'🇬🇧', name:'English',
     sys:'Always respond in English.',
+    role:'You are "Dio BOT" — the official AI assistant of the Dionesse brand. Help only with Dionesse-related topics. When recommending products, provide price, ingredients and usage info. Be warm and professional.',
     ph:'Ask about products, prices...',
     hint:'Enter to send · Shift+Enter new line',
     clear:'Clear Chat', newChat:'New Chat', skinBtn:'Skin Analysis',
@@ -379,6 +381,7 @@ const L = {
   ar:{
     flag:'🇸🇦', name:'العربية',
     sys:'أجب دائماً باللغة العربية.',
+    role:'أنت "Dio BOT" — المساعد الذكاء الاصطناعي الرسمي لعلامة Dionesse. ساعد فقط في مواضيع تتعلق بـ Dionesse. عند التوصية بالمنتجات قدم السعر والمكونات ومعلومات الاستخدام. كن ودياً ومحترفاً.',
     ph:'اسأل عن المنتجات والأسعار...',
     hint:'Enter للإرسال',
     clear:'مسح المحادثة', newChat:'محادثة جديدة', skinBtn:'تحليل البشرة',
@@ -407,6 +410,7 @@ const L = {
   de:{
     flag:'🇩🇪', name:'Deutsch',
     sys:'Antworte immer auf Deutsch.',
+    role:'Du bist "Dio BOT" — der offizielle KI-Assistent der Marke Dionesse. Hilf nur bei Dionesse-bezogenen Themen. Bei Produktempfehlungen gib Preis, Inhaltsstoffe und Anwendungshinweise an. Sei freundlich und professionell.',
     ph:'Fragen Sie nach Produkten...',
     hint:'Enter senden · Shift+Enter neue Zeile',
     clear:'Chat löschen', newChat:'Neuer Chat', skinBtn:'Hautanalyse',
@@ -435,6 +439,7 @@ const L = {
   fr:{
     flag:'🇫🇷', name:'Français',
     sys:'Réponds toujours en français.',
+    role:'Tu es "Dio BOT" — l\'assistant IA officiel de la marque Dionesse. Aide uniquement sur les sujets liés à Dionesse. Lors de recommandations fournis le prix, les ingrédients et les conseils d\'utilisation. Sois chaleureux et professionnel.',
     ph:'Posez des questions sur les produits...',
     hint:'Entrée pour envoyer',
     clear:'Effacer', newChat:'Nouveau chat', skinBtn:'Analyse peau',
@@ -463,6 +468,7 @@ const L = {
   ru:{
     flag:'🇷🇺', name:'Русский',
     sys:'Всегда отвечай на русском языке.',
+    role:'Ты "Dio BOT" — официальный ИИ-ассистент бренда Dionesse. Помогай только по темам, связанным с Dionesse. При рекомендации продуктов указывай цену, состав и способ применения. Будь дружелюбным и профессиональным.',
     ph:'Спрашивайте о продуктах и ценах...',
     hint:'Enter для отправки',
     clear:'Очистить чат', newChat:'Новый чат', skinBtn:'Анализ кожи',
@@ -491,6 +497,7 @@ const L = {
   es:{
     flag:'🇪🇸', name:'Español',
     sys:'Responde siempre en español.',
+    role:'Eres "Dio BOT" — el asistente de IA oficial de la marca Dionesse. Ayuda solo con temas relacionados con Dionesse. Al recomendar productos proporciona precio, ingredientes e instrucciones de uso. Sé cálido y profesional.',
     ph:'Pregunta sobre productos y precios...',
     hint:'Enter para enviar',
     clear:'Borrar chat', newChat:'Nuevo chat', skinBtn:'Análisis de piel',
@@ -519,6 +526,7 @@ const L = {
   zh:{
     flag:'🇨🇳', name:'中文',
     sys:'始终用中文回答。',
+    role:'你是"Dio BOT"——Dionesse品牌的官方AI助手。只帮助与Dionesse相关的话题。推荐产品时提供价格、成分和使用方法。态度热情专业。',
     ph:'询问产品、价格和推荐...',
     hint:'Enter发送 · Shift+Enter换行',
     clear:'清除对话', newChat:'新对话', skinBtn:'肤质分析',
@@ -605,7 +613,6 @@ const skinData = {type:'', probs:[], budget:''};
 if (apiKey) document.getElementById('apiBanner').style.display = 'none';
 applyAll(curLang);
 fetchRates().then(updateCurBadge);
-setInterval(() => { ratesFetched = 0; fetchRates().then(updateCurBadge); }, 3600000);
 
 // ════════════════════════════════════════
 // DİL
@@ -619,7 +626,7 @@ function setLang(l, btn) {
   document.querySelectorAll('.lang-opt').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('langDrop').classList.remove('open');
-  applyAll(l);
+  newChat();
   updateCurBadge();
 }
 
@@ -1038,7 +1045,7 @@ async function send() {
   history.push({role:'user', content:text});
   inp.value = ''; inp.style.height = '24px';
   addTyping();
-  const sysPrompt = `Sen "Dio BOT"sun — Dionesse markasının resmi AI asistanısın. ${L[curLang].sys} Sadece Dionesse ile ilgili konularda yardım et. Ürün önerirken fiyat, içerik ve kullanım bilgisi ver. Samimi ve profesyonel ol.${curNote()}\n\nDionesse veritabanı:\n${DIONESSE}`;
+  const sysPrompt = `${L[curLang].sys} ${L[curLang].role}${curNote()}\n\nDionesse database:\n${DIONESSE}`;
   try {
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method:'POST',
